@@ -1,9 +1,9 @@
-def get_spanish_translation(category, word):
+def get_spanish_translations(category, words):
     """
-    Function to get the Spanish translation of a word from a specific category.
-    :param category: The category of the word (e.g., 'greetings', 'colors').
-    :param word: The English word to translate.
-    :return: The Spanish translation or a message if not found.
+    Function to get the Spanish translations for a list of words in a specific category.
+    :param category: The category of the words (e.g., 'greetings', 'colors').
+    :param words: A list of English words to translate.
+    :return: A dictionary with English words as keys and Spanish translations as values.
     """
     spanish_dict = {
         "greetings": {
@@ -31,18 +31,24 @@ def get_spanish_translation(category, word):
     }
 
     # Check if category exists
-    if category in spanish_dict:
-        # Check if the word exists in the category
-        if word in spanish_dict[category]:
-            return spanish_dict[category][word]
-        else:
-            return f"'{word}' not found in category '{category}'."
-    else:
+    if category not in spanish_dict:
         return f"Category '{category}' not found."
 
-# Example usage
-print(get_spanish_translation("greetings", "hello"))  # Output: hola
-print(get_spanish_translation("colors", "blue"))  # Output: azul
-print(get_spanish_translation("numbers", 3))  # Output: tres
-print(get_spanish_translation("greetings", "hi"))  # Output: 'hi' not found in category 'greetings'.
+    translations = {}
+    for word in words:
+        translation = spanish_dict[category].get(word, f"'{word}' not found in '{category}'")
+        translations[word] = translation
 
+    return translations
+
+# Example usage
+words_to_translate = ["hello", "please", "goodbye"]
+category = "greetings"
+translations = get_spanish_translations(category, words_to_translate)
+print(translations)  # Output: {'hello': 'hola', 'please': 'por favor', 'goodbye': 'adiós'}
+
+# Example usage with colors
+words_to_translate = ["red", "blue", "pink"]
+category = "colors"
+translations = get_spanish_translations(category, words_to_translate)
+print(translations)  # Output: {'red': 'rojo', 'blue': 'azul', 'pink': "'pink' not found in 'colors'"}
